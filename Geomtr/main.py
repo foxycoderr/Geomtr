@@ -2,6 +2,7 @@ from input import Input
 from logger import Logger
 from parser import Parser
 from tokenizer import Tokenizer
+from converter import Converter
 from datetime import datetime
 import os
 import time
@@ -16,8 +17,7 @@ class Runner:
             logfile = open("log", "x")
 
     def main(self):
-        Logger.log("Starting main function", "main")
-        print("Initiating problem parsing and drawing...")
+        Logger.log("Starting main function.", "main")
         problem = Input.input_problem()
         valid = Input.validate(problem)
 
@@ -27,7 +27,16 @@ class Runner:
             for sentence in sentence_list:
                 sentence = Tokenizer.split_sentence(sentence)
 
-                parser.find_keywords(sentence)
+                object_kws = parser.find_objects(sentence)
+                property_kws = parser.find_properties(sentence)
+
+                valid = Converter.validate(object_kws, property_kws)
+
+                if valid:
+                    objects = Converter.convert_objects(object_kws)
+                    properties = Converter.convert_properties(property_kws, objects)
+                else:
+                    print("Logic validation failed. Please edit the problem text and fix errors outlined above, then try again. ")
 
         else:
             print("Parsing failed. Please edit the problem text and fix errors outlined above, then try again. ")
@@ -50,7 +59,7 @@ class Runner:
     def help(self):
         print("Geomtr is very simple to use. These are the commands it recognizes: ")
         print("help - display this message")
-        print("main - run the main parse-and-draw-diagram script")
+        print("start - run the main draw-diagram script")
         print("info - display version, release date etc. ")
         print("exit - close the program. ")
         print("Commands do not take arguments (additional information to run them); just type in the command, hit enter, and the system wil guide you. ")
@@ -64,12 +73,12 @@ class Runner:
         exit(0)
 
     def command_input(self):
-        command = input(">>> ")
+        command = input(">>> ").lower().strip()
 
         match command:
             case "help":
                 self.help()
-            case "main":
+            case "start":
                 self.main()
             case "info":
                 self.program_info()

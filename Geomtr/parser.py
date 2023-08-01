@@ -3,23 +3,48 @@ from logger import Logger
 
 class Parser:
     def __init__(self):
-        self.keywords = ["rectangle", "triangle", "point"]
+        self.object_keywords = ["rectangle", "triangle", "point"]
+        self.property_keywords = ["side", "angle"]
 
-    def find_keywords(self, sentence):
-        Logger.log("Started keyword find", "parser")
+    def find_objects(self, sentence):
+        """ Finds objects and their point names """
+        Logger.log("Started object keyword find", "parser")
 
         keywords = []
         index = 0
         for word in sentence:
-            if word in self.keywords:
+            if word in self.object_keywords:
                 Logger.log(f"Found keyword {word}.", "parser")
                 point_name = sentence[index+1]
                 keywords.append([word, point_name])
-
             index += 1
 
-        Logger.log("Keywords parsed", "parser")
+        Logger.log("Object keywords parsed", "parser")
         Logger.log(keywords, "parser")
+
+        return keywords
+
+    def find_properties(self, sentence):
+        """ Finds properties such as side lengths and angles of objects. """
+        Logger.log("Started property keyword find", "parser")
+
+        keywords = []
+        index = 0
+        for word in sentence:
+            if word in self.property_keywords:
+                Logger.log(f"Found property kw {word}", "parser")
+                point_name = sentence[index+1]
+                value = sentence[index+3]
+                keywords.append([word, point_name, value])
+            index += 1
+
+        Logger.log("Property keywords parsed", "parser")
+        Logger.log(keywords, "parser")
+        print("Parsing OK.")
+
+        return keywords
+
+
 
 
 

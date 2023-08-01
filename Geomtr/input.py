@@ -6,13 +6,13 @@ class Input:
     @staticmethod
     def input_problem():
         problem = input("Please paste or type your problem here... ")
-        print("Problem received. Please wait...")
+        print("Problem received. Please wait.")
         Logger.log("Problem text put in", "input")
         return problem
 
     @staticmethod
     def validate(text):
-        print("Validating problem text... ")
+        print("Validating problem text.")
         Logger.log("Started text validation", "input")
         text = list(text)
 
@@ -26,7 +26,7 @@ class Input:
                 Logger.log("Found issue in validation", "input")
 
         if valid is True:
-            print("Problem validated, no issues found. Proceeding to parse...")
+            print("Problem validated, no issues found. Proceeding to parse.")
             Logger.log("Validation OK", "input")
         else:
             print("Problem text appears to be invalid. Following issues were found: ")
