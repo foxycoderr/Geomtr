@@ -8,33 +8,33 @@ import os
 import time
 
 
-class Runner:
+class Runner:  # main runner class, brings all functions of the program together
     def __init__(self):
         self.version = "0.0"
         self.release_date = "N/A"
         log_file_exists = os.path.isfile("log")
-        if log_file_exists is False:
+        if log_file_exists is False:  # checks if there is a local log file, creates if there isn't
             logfile = open("log", "x")
 
     def main(self):
         Logger.log("Starting main function.", "main")
-        problem = Input.input_problem()
-        valid = Input.validate(problem)
+        problem = Input.input_problem()  # input of problem
+        valid = Input.validate(problem)  # initial validation of input
 
-        parser = Parser()
+        parser = Parser()  # initialise parser
         if valid:
-            sentence_list = Tokenizer.split_text(problem)
+            sentence_list = Tokenizer.split_text(problem)  # split text into sentences
             for sentence in sentence_list:
-                sentence = Tokenizer.split_sentence(sentence)
+                sentence = Tokenizer.split_sentence(sentence)  # split sentence into words
 
-                object_kws = parser.find_objects(sentence)
-                property_kws = parser.find_properties(sentence)
+                object_kws = parser.find_objects(sentence)  # finding object keywords
+                property_kws = parser.find_properties(sentence)  # finding property keywords
 
-                valid = Converter.validate(object_kws, property_kws)
+                valid = Converter.validate(object_kws, property_kws)  # additional logic validation
 
                 if valid:
-                    objects = Converter.convert_objects(object_kws)
-                    properties = Converter.convert_properties(property_kws, objects)
+                    [objects, properties] = Converter.convert_objects(object_kws)  # converting keywords to classes
+                    properties = Converter.convert_properties(property_kws, objects, properties)
                 else:
                     print("Logic validation failed. Please edit the problem text and fix errors outlined above, then try again. ")
 
@@ -72,7 +72,7 @@ class Runner:
         time.sleep(3)
         exit(0)
 
-    def command_input(self):
+    def command_input(self):  # command is called after the use of any other command, creates the terminal-like UI
         command = input(">>> ").lower().strip()
 
         match command:

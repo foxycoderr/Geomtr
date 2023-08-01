@@ -4,14 +4,14 @@ from logger import Logger
 class Input:
 
     @staticmethod
-    def input_problem():
+    def input_problem():  # input of problem
         problem = input("Please paste or type your problem here... ")
         print("Problem received. Please wait.")
         Logger.log("Problem text put in", "input")
         return problem
 
     @staticmethod
-    def validate(text):
+    def validate(text):  # initial validation of problem text for invalid symbols
         print("Validating problem text.")
         Logger.log("Started text validation", "input")
         text = list(text)

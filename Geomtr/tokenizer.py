@@ -1,7 +1,7 @@
 from logger import Logger
 
 
-class Tokenizer:
+class Tokenizer:  # very simple class to split text and sentences, probably not very necessary
     @staticmethod
     def split_text(text):
         text = text.lower()

@@ -1,9 +1,9 @@
 from logger import Logger
 
 
-class Parser:
+class Parser:  # parser that reads through the problem text and picks out key information
     def __init__(self):
-        self.object_keywords = ["rectangle", "triangle", "point"]
+        self.object_keywords = ["rectangle", "triangle", "point"]  # defining what to look for
         self.property_keywords = ["side", "angle"]
 
     def find_objects(self, sentence):
