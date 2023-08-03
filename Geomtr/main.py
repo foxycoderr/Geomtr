@@ -6,6 +6,7 @@ from converter import Converter
 from datetime import datetime
 import os
 import time
+import json
 
 
 class Runner:  # main runner class, brings all functions of the program together
@@ -13,10 +14,30 @@ class Runner:  # main runner class, brings all functions of the program together
         self.version = "0.0"
         self.release_date = "N/A"
         log_file_exists = os.path.isfile("log")
-        if log_file_exists is False:  # checks if there is a local log file, creates if there isn't
+        user_settings_exits = os.path.isfile("user_data.json")
+        if not log_file_exists:  # checks if there is a local log file, creates if there isn't
             logfile = open("log", "x")
+            Logger.log(f"Create logfile", "main")
+        if not user_settings_exits:
+            user_settings_file_creation = open("user_data.json", "x")
+            user_data = dict()
+            user_data["username"] = os.getlogin()
+            user_data["debug_mode"] = False
+            user_data["history"] = []
+            with open("user_data.json", "w") as f:
+                json.dump(user_data, f, indent=4)
+            Logger.log("Create user data file", "main")
+            self.username = os.getlogin()
+            self.debug_mode = False
+            self.history = []
+        else:
+            with open("user_data.json", "r") as f:
+                user_data = json.load(f)
+            self.username = user_data["username"]
+            self.debug_mode = user_data["debug_mode"]
+            self.history = user_data["history"]
 
-    def main(self):
+    def main(self):  # TODO: implement debug mode setting
         Logger.log("Starting main function.", "main")
         problem = Input.input_problem()  # input of problem
         valid = Input.validate(problem)  # initial validation of input
@@ -45,6 +66,20 @@ class Runner:  # main runner class, brings all functions of the program together
         print()
         self.command_input()
 
+    def history_display(self, arg):
+        arg = arg[8:]
+        if not arg.isnumeric():
+            for problem in self.history:
+                print(str(problem[0]) + " | " + problem[1][:40] + "... | " + problem[2])
+            print("To see a problem fully, run 'history <problem_id>', for example 'history 3'. The ID of each problem is in the right column.")
+        else:
+            arg = int(arg)
+            try:
+                problem = self.history[arg-1]
+                print(problem[1])
+            except IndexError:
+                print("Invalid problem ID. Please run 'history' to see all saved problems. ")
+
     def program_info(self):
         print(f"Version: {self.version}")
         print(f"Release Date: {self.release_date}")
@@ -60,6 +95,7 @@ class Runner:  # main runner class, brings all functions of the program together
         print("Geomtr is very simple to use. These are the commands it recognizes: ")
         print("help - display this message")
         print("start - run the main draw-diagram script")
+        print("history - show your problem history")
         print("info - display version, release date etc. ")
         print("exit - close the program. ")
         print("Commands do not take arguments (additional information to run them); just type in the command, hit enter, and the system wil guide you. ")
@@ -85,7 +121,10 @@ class Runner:  # main runner class, brings all functions of the program together
             case "exit":
                 self.exit()
             case _:
-                print("That's not a valid command. Run 'help' to see a list of them. \n")
+                if command.startswith("history"):
+                    self.history_display(command)
+                else:
+                    print("That's not a valid command. Run 'help' to see a list of them. \n")
 
         self.command_input()
 
