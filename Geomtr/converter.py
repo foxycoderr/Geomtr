@@ -45,7 +45,7 @@ class Converter:  # contains function to convert keywords to classes
         pass
 
     @staticmethod
-    def convert_objects(object_keywords):  # converts objects to classes
+    def convert_objects(object_keywords, dbm):  # converts objects to classes
         Logger.log("Started object conversion", "converter")
         objects = []
         properties = []
@@ -89,7 +89,7 @@ class Converter:  # contains function to convert keywords to classes
         return [objects, properties]
 
     @staticmethod
-    def convert_properties(property_keywords, objects, properties):  # converts keywords to classes
+    def convert_properties(property_keywords, objects, properties, dbm):  # converts keywords to classes
         Logger.log("Started property conversion", "converter")
         properties = properties
         objects_local = objects
@@ -122,8 +122,8 @@ class Converter:  # contains function to convert keywords to classes
         return [properties, objects_local]
 
     @staticmethod
-    def validate(object_keywords, property_keywords):  # carries out second logic validation
-        print("Validating problem logic.")
+    def validate(object_keywords, property_keywords, dbm):  # carries out second logic validation
+        if dbm: print("Validating problem logic.")
         obj_valid = True
         obj_errors = []
         for object_kw in object_keywords:  # checks number of points per object (4 for rectangle etc.)
@@ -154,7 +154,7 @@ class Converter:  # contains function to convert keywords to classes
                     prop_errors.append(f" - angle {property_kw[1]} seems to not have 3 associated points.")
 
         if obj_valid is True and prop_valid is True:  # checking no errors were found, if they were, printing them
-            print("Problem logic OK, proceeding to draw diagram.")
+            if dbm: print("Problem logic OK, proceeding to draw diagram.")
             Logger.log("Logic OK", "converter")
         else:
             print("Problem seems to have logic issues. Errors are outlined below:")

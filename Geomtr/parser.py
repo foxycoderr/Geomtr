@@ -6,7 +6,7 @@ class Parser:  # parser that reads through the problem text and picks out key in
         self.object_keywords = ["rectangle", "triangle", "point"]  # defining what to look for
         self.property_keywords = ["side", "angle"]
 
-    def find_objects(self, sentence):
+    def find_objects(self, sentence, dbm):
         """ Finds objects and their point names """
         Logger.log("Started object keyword find", "parser")
 
@@ -24,7 +24,7 @@ class Parser:  # parser that reads through the problem text and picks out key in
 
         return keywords
 
-    def find_properties(self, sentence):
+    def find_properties(self, sentence, dbm):
         """ Finds properties such as side lengths and angles of objects. """
         Logger.log("Started property keyword find", "parser")
 
@@ -40,7 +40,7 @@ class Parser:  # parser that reads through the problem text and picks out key in
 
         Logger.log("Property keywords parsed", "parser")
         Logger.log(keywords, "parser")
-        print("Parsing OK.")
+        if dbm: print("Parsing OK.")
 
         return keywords
 

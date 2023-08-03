@@ -4,15 +4,15 @@ from logger import Logger
 class Input:
 
     @staticmethod
-    def input_problem():  # input of problem
+    def input_problem(dbm):  # input of problem
         problem = input("Please paste or type your problem here... ")
-        print("Problem received. Please wait.")
+        print("Working on it...")
         Logger.log("Problem text put in", "input")
         return problem
 
     @staticmethod
-    def validate(text):  # initial validation of problem text for invalid symbols
-        print("Validating problem text.")
+    def validate(text, dbm):  # initial validation of problem text for invalid symbols
+        if dbm: print("Validating problem text.")
         Logger.log("Started text validation", "input")
         text = list(text)
 
@@ -26,7 +26,7 @@ class Input:
                 Logger.log("Found issue in validation", "input")
 
         if valid is True:
-            print("Problem validated, no issues found. Proceeding to parse.")
+            if dbm: print("Problem validated, no issues found. Proceeding to parse.")
             Logger.log("Validation OK", "input")
         else:
             print("Problem text appears to be invalid. Following issues were found: ")
