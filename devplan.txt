@@ -1,0 +1,10 @@
+Coordinator Functionality
+
+1. Pick a point (a)
+2. See in which angles (b) it figurates
+3. Pick first point (c) in angle b, it will be directly below the point a
+4. Place it at the correct distance, line should exist
+5. Place other point in angle b accordingly
+6. Do with all other points
+
+Proceed to draw all visible lines.

@@ -88,7 +88,7 @@ class Converter:  # contains function to convert keywords to classes
 
         return [objects, properties]
 
-    @staticmethod
+    @staticmethod  # TODO: create lines for angles
     def convert_properties(property_keywords, objects, properties, dbm):  # converts keywords to classes
         Logger.log("Started property conversion", "converter")
         properties = properties
