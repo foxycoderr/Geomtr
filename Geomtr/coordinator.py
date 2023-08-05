@@ -42,6 +42,7 @@ class Coordinator:
                             else:
                                 cp2_line = line
 
+                        # TODO: make sure signs of offsets are correct
                         angle_sin = math.sin(math.radians(int(angle.value)))  # getting x offset to line length ratio
                         x_offset = angle_sin*int(cp2_line.length)
                         angle_cos = math.cos(math.radians(int(angle.value)))  # getting y offset to line length ration
