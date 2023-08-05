@@ -10,7 +10,7 @@ class Point:  # stores point information
         self.p2 = None
 
     def __str__(self):
-        return str("point " + self.name)
+        return str("point " + str(self.name))
 
 
 class Line:  # stores line information

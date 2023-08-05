@@ -2,7 +2,8 @@ from input import Input
 from logger import Logger
 from parser import Parser
 from tokenizer import Tokenizer
-from converter import Converter
+from converter import Converter, Point
+from coordinator import Coordinator
 from datetime import datetime
 import os
 import time
@@ -41,7 +42,7 @@ class Runner:  # main runner class, brings all functions of the program together
         self.history = user_data["history"]
         f.close()
 
-    def main(self):  # TODO: implement debug mode setting, save history
+    def main(self):
         Logger.log("Starting main function.", "main")
         dbm = self.debug_mode
         problem = Input.input_problem(dbm)  # input of problem
@@ -63,7 +64,11 @@ class Runner:  # main runner class, brings all functions of the program together
 
                 if valid:
                     [objects, properties] = Converter.convert_objects(object_kws, dbm)  # converting keywords to classes
-                    properties = Converter.convert_properties(property_kws, objects, properties, dbm)
+                    [properties, objects] = Converter.convert_properties(property_kws, objects, properties, dbm)
+
+                    # Creation of coordinates by default off for now due to incompleteness of the module
+                    # Errors may arise if uncommented
+                    # coordinates = Coordinator.create_coordinates(objects, properties)
 
                     """ Make sure this part stays the last thing after drawing diagram. """
 
