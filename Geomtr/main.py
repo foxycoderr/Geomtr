@@ -12,42 +12,42 @@ import json
 
 class Runner:  # main runner class, brings all functions of the program together
     def __init__(self):
-        self.version = "0.0"
+        self.version = "0.0"  # program attributes
         self.release_date = "N/A"
-        log_file_exists = os.path.isfile("log")
-        user_settings_exits = os.path.isfile("user_data.json")
+        log_file_exists = os.path.isfile("log")  # check if log file exists
+        user_data_exists = os.path.isfile("user_data.json")  # check is user data file exists
         if not log_file_exists:  # checks if there is a local log file, creates if there isn't
             logfile = open("log", "x")
             Logger.log(f"Create logfile", "main")
-        if not user_settings_exits:
+        if not user_data_exists:
             user_settings_file_creation = open("user_data.json", "x")
             user_data = dict()
-            user_data["username"] = os.getlogin()
+            user_data["username"] = os.getlogin()  # add the data upon file creation
             user_data["debug_mode"] = False
             user_data["history"] = []
             with open("user_data.json", "w") as f:
                 json.dump(user_data, f, indent=4)
             Logger.log("Create user data file", "main")
-            self.username = os.getlogin()
+            self.username = os.getlogin()  # save new data into class attributes
             self.debug_mode = False
             self.history = []
         else:
-            self.update_class_data()
+            self.update_class_data()  # check docs for this func below
 
-    def update_class_data(self):
+    def update_class_data(self):  # called when use data is updated
         with open("user_data.json", "r") as f:
             user_data = json.load(f)
-        self.username = user_data["username"]
+        self.username = user_data["username"]  # update class attributes according to the settings file
         self.debug_mode = user_data["debug_mode"]
         self.history = user_data["history"]
         f.close()
 
-    def main(self):
+    def main(self):  # main function of the program (diagram drawing)
         Logger.log("Starting main function.", "main")
         dbm = self.debug_mode
         problem = Input.input_problem(dbm)  # input of problem
 
-        if dbm:
+        if dbm:  # this variable is passed to almost every function, if it's true, some logs get printed into the console as well as the logfile
             print("Debug mode is turned on; debugging logs will be printed. Run 'debug' to toggle it.")
         valid = Input.validate(problem, dbm)  # initial validation of input
 
@@ -70,12 +70,12 @@ class Runner:  # main runner class, brings all functions of the program together
                     # Errors may arise if uncommented
                     # coordinates = Coordinator.create_coordinates(objects, properties)
 
-                    """ Make sure this part stays the last thing after drawing diagram. """
+                    """ ❗❗❗ Make sure this next part stays the last thing after drawing diagram. ❗❗❗ """
 
                     with open("user_data.json", "r") as f:
                         data = json.load(f)
 
-                    history = data["history"]
+                    history = data["history"]  # update history
                     date = f"{datetime.now().day}/{datetime.now().month}/{datetime.now().year}"
                     history.append([str(len(history)+1), problem, date])
 
@@ -83,36 +83,44 @@ class Runner:  # main runner class, brings all functions of the program together
                         json.dump(data, f, indent=4)
                     f.close()
 
-                    self.update_class_data()
+                    self.update_class_data()  # update class attributes
                 else:
                     print("Logic validation failed. Please edit the problem text and fix errors outlined above, then try again. ")
 
         else:
             print("Parsing failed. Please edit the problem text and fix errors outlined above, then try again. ")
 
-        Logger.space()
-        self.command_input()
+        Logger.blank_line()
+        self.command_input()  # ready for next command
 
-    def debug_toggle(self):
+    def debug_toggle(self):  # toggles debug mode
         with open("user_data.json", "r") as f:
             data = json.load(f)
         data["debug_mode"] = not data["debug_mode"]
 
+        if data["debug_mode"]:
+            toggle = "on"
+        else:
+            toggle = "off"
+        print(f"Debug mode turned {toggle}.")
+
         with open("user_data.json", "w") as f:
             json.dump(data, f)
-        self.update_class_data()
+        self.update_class_data()  # update class attributes
 
-    def history_display(self, arg):
+    def history_display(self, arg):  # prints history
         arg = arg[8:]
-        if not arg.isnumeric():
-            print("ID " + " | " + "Problem Text" + 38*" " + " | " + "Date")
-            print(63*"-")
-            for problem in self.history:
+        if not arg.isnumeric():  # if no ID arg is given, just display list
+            print("ID " + " | " + "Problem Text" + 38*" " + " | " + "Date")  # top row
+            print(63*"-")  # separator
+            for problem in self.history:  # lengthening or shortening
                 index = str(problem[0])
                 if len(index) < 3:
                     index = index + " "*(3-len(index))
+                if len(index) > 3:  # TODO: get rid of this over 999 thing
+                    index = "over 999"  # this is ugly sorry :(
 
-                problem_text = problem[1]
+                problem_text = problem[1]  # next block of code makes the preview exactly 50 chars
                 if len(problem_text) > 47:
                     problem_text = problem_text[:47] + "..."
                 if len(problem_text) < 47:
@@ -120,14 +128,14 @@ class Runner:  # main runner class, brings all functions of the program together
 
                 date = problem[2]
 
-                print(index + " | " + problem_text + " | " + date)
+                print(index + " | " + problem_text + " | " + date)  # prints row
             print()
             print("To see a problem fully, run 'history <problem_id>', for example 'history 3'. ")
-        else:
+        else:  # if problem ID is given
             arg = int(arg)
             try:
                 problem = self.history[arg-1]
-                print(problem[1])
+                print(problem[1])  # return full problem
             except IndexError:
                 print("Invalid problem ID. Please run 'history' to see all saved problems. ")
 
@@ -182,10 +190,10 @@ class Runner:  # main runner class, brings all functions of the program together
 
 
 runner = Runner()
-Logger.space()
-Logger.space()
-Logger.freelog(f"Starting program at {datetime.now()}.")
-Logger.space()
+Logger.blank_line()
+Logger.blank_line()
+Logger.plain_log(f"Starting program at {datetime.now()}.")
+Logger.blank_line()
 runner.program_start()
 
 

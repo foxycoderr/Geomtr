@@ -8,7 +8,7 @@ class Coordinator:
     """ Uses converted objects and properties to create coordinates for objects. """
 
     @staticmethod
-    def create_coordinates(objects, properties):  # started working, code doesn't work (don't attempt to uncomment)
+    def create_coordinates(objects, properties):  # started working, not a completed module
         Logger.log("Started coordinator", "coordinator")
         coordinates = []
         for obj in objects:
@@ -30,13 +30,13 @@ class Coordinator:
 
                         angle_lines = []
                         for line in objects:
-                            if isinstance(line, Line):  # gathering distances for angles
+                            if isinstance(line, Line):  # gathering distances for points in this angle
                                 if inp in [line.p1, line.p2] and any([cp1 in [line.p1, line.p2], cp2 in [line.p1, line.p2]]):  # found connection line
                                     angle_lines.append(line)
                         Logger.log(angle_lines, "coord")
                         cp1_line = None
                         cp2_line = None
-                        for line in angle_lines:
+                        for line in angle_lines:  # determining which line found is which
                             if cp1 in [line.p1, line.p2]:
                                 cp1_line = line
                             else:
@@ -47,7 +47,7 @@ class Coordinator:
                         x_offset = angle_sin*int(cp2_line.length)
                         angle_cos = math.cos(math.radians(int(angle.value)))  # getting y offset to line length ration
                         y_offset = angle_cos*int(cp2_line.length)
-                        coordinates.append([obj.name, (0,0)])
+                        coordinates.append([obj.name, (0,0)])  # TODO: make these point objects
                         coordinates.append([cp1, (0, -int(cp1_line.length))])
                         coordinates.append([cp2, (-x_offset, -y_offset)])
 

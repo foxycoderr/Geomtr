@@ -12,20 +12,20 @@ class Logger:  # operates with the log file
         logfile.close()
 
     @staticmethod
-    def read_log():  # opens the log
+    def read_log():  # opens and returns the whole log
         logfile = open("log", "r")
         text = logfile.read()
         logfile.close()
         return text
 
     @staticmethod
-    def space():  # adds a blank line to the log
+    def blank_line():  # adds a blank line to the log
         logfile = open("log", "a")
         logfile.write("\n")
         logfile.close()
 
     @staticmethod
-    def freelog(log_text):  # allows free, plaintext logging (q=without mandatory date and source module of normal log func)
+    def plain_log(log_text):  # allows plaintext logging (without mandatory date and source module of normal log func)
         logfile = open("log", 'a')
         logfile.write(log_text)
         logfile.close()

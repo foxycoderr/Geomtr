@@ -4,7 +4,7 @@ from logger import Logger
 class Input:
 
     @staticmethod
-    def input_problem(dbm):  # input of problem
+    def input_problem(dbm):  # input of problem (nice and simple)
         problem = input("Please paste or type your problem here... ")
         print("Working on it...")
         Logger.log("Problem text put in", "input")

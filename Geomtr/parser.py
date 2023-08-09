@@ -13,7 +13,7 @@ class Parser:  # parser that reads through the problem text and picks out key in
         keywords = []
         index = 0
         for word in sentence:
-            if word in self.object_keywords:
+            if word in self.object_keywords:  # if word is a keyword, add it and the next word (it has to be the point letters)
                 Logger.log(f"Found keyword {word}.", "parser")
                 point_name = sentence[index+1]
                 keywords.append([word, point_name])
@@ -33,7 +33,7 @@ class Parser:  # parser that reads through the problem text and picks out key in
         for word in sentence:
             if word in self.property_keywords:
                 Logger.log(f"Found property kw {word}", "parser")
-                point_name = sentence[index+1]
+                point_name = sentence[index+1]  # same as with object parsing
                 value = sentence[index+3]
                 keywords.append([word, point_name, value])
             index += 1

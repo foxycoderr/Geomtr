@@ -18,14 +18,14 @@ class Drawer:
     def draw(self):  # just displays a white screen for now
         running = True
 
-        while running:
+        while running:  # checking if program was closed each frame
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
 
             self.screen.fill("white")
 
-            pygame.display.flip()
+            pygame.display.flip()  # display everything in this frame
 
         pygame.quit()
 
