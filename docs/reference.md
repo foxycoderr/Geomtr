@@ -1,6 +1,11 @@
 # Reference
-This section will briefly explain each of the program's modules' functionalities, giving you an insight into the program; recommended to read before looking at the code.
+This section will give you an overview of how the program works and then briefly explain each of the program's modules' functionalities, giving you an insight into the program; recommended to read before looking at the code.
 
+Note that this information is not the full documentation, and is only designed to give you a rough understanding of how the program is split into modules and what each one does. You will find explanations for the code within the code itself, in the inline comments.
+## Overview
+Geomtr uses multiple modules in the form of classes, whose functions are run in the required order by functions of the main runner class. Each file in this folder contains a module. If you run the program, you will also see two new files "log" and "user_data.json", appear automatically. They store run logs (useful for developers to see what the program does), and custom user data, such as username, history, debug mode etc.
+
+## Modules
 ### Main
 This file contains the main Runner class, which is responsible for running other modules and working with the UI. When the user runs a command, it is read by one of this class' functions, which then runs the code needed to complete what the user demanded.
 

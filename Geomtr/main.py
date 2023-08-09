@@ -43,9 +43,16 @@ class Runner:  # main runner class, brings all functions of the program together
         f.close()
 
     def main(self):  # main function of the program (diagram drawing)
+        if Logger.log_length() > 50:
+            Logger.clear_log()
+
         Logger.log("Starting main function.", "main")
         dbm = self.debug_mode
         problem = Input.input_problem(dbm)  # input of problem
+
+        if problem == "exit":
+            print("Exiting problem input.")
+            self.command_input()
 
         if dbm:  # this variable is passed to almost every function, if it's true, some logs get printed into the console as well as the logfile
             print("Debug mode is turned on; debugging logs will be printed. Run 'debug' to toggle it.")
@@ -68,7 +75,7 @@ class Runner:  # main runner class, brings all functions of the program together
 
                     # Creation of coordinates by default off for now due to incompleteness of the module
                     # Errors may arise if uncommented
-                    # coordinates = Coordinator.create_coordinates(objects, properties)
+                    coordinates = Coordinator.create_coordinates(objects, properties)
 
                     """ ❗❗❗ Make sure this next part stays the last thing after drawing diagram. ❗❗❗ """
 
@@ -130,7 +137,7 @@ class Runner:  # main runner class, brings all functions of the program together
 
                 print(index + " | " + problem_text + " | " + date)  # prints row
             print()
-            print("To see a problem fully, run 'history <problem_id>', for example 'history 3'. ")
+            print("To see a description fully, run 'history <problem_id>', for example 'history 3'. ")
         else:  # if problem ID is given
             arg = int(arg)
             try:
@@ -153,7 +160,7 @@ class Runner:  # main runner class, brings all functions of the program together
         print("Geomtr is very simple to use. These are the commands it recognizes: ")
         print("help - display this message")
         print("start - run the main draw-diagram script")
-        print("history - show your problem history")
+        print("history - show your diagram description history")
         print("info - display version, release date etc. ")
         print("debug - toggle debug mode")
         print("exit - close the program. ")

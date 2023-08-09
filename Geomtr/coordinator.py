@@ -47,12 +47,15 @@ class Coordinator:
                         x_offset = angle_sin*int(cp2_line.length)
                         angle_cos = math.cos(math.radians(int(angle.value)))  # getting y offset to line length ration
                         y_offset = angle_cos*int(cp2_line.length)
-                        coordinates.append([obj.name, (0,0)])  # TODO: make these point objects
-                        coordinates.append([cp1, (0, -int(cp1_line.length))])
-                        coordinates.append([cp2, (-x_offset, -y_offset)])
+                        coordinates.append(Point(0, 0, obj.name))
+                        coordinates.append(Point(0, -int(cp1_line.length), cp1))
+                        coordinates.append(Point(-x_offset, -y_offset, cp2))
 
             if obj is Line:
                 pass
 
-        Logger.log(f"Coordinator finished, {coordinates}", "coordinator")
+        printable_ccordinates = []
+        for point in coordinates:
+            printable_ccordinates.append(point)
+        Logger.log(f"Coordinator finished, {printable_ccordinates}", "coordinator")
         return coordinates

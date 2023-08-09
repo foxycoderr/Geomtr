@@ -85,7 +85,7 @@ class Converter:
 
         return [objects, properties]
 
-    @staticmethod  # TODO: autocreate lines for angles
+    @staticmethod  # TODO: add check that all points used in properties exist, create them with a warning
     def convert_properties(property_keywords, objects, properties, dbm):  # converts keywords to classes
         Logger.log("Started property conversion", "converter")
         properties = properties  # saving given data into variables
@@ -106,6 +106,25 @@ class Converter:
                 points = list(prop[1])  # NL checks angle doesn't already exist
                 if not any(added_prop.p2 == points[1] and (added_prop.p1 == points[2] and added_prop.p3 == points[0] or added_prop.p1 == points[0] and added_prop.p3 == points[2]) for added_prop in properties):
                     properties.append(Angle(points[0], points[1], points[2], prop[2]))  # if not create it
+                    line_1 = None  # these are the angle lines; if we create an angle ABC, the architecture
+                    line_2 = None  # later on requires line AB and BC
+
+                    lines = []
+                    for line in objects_local:  # finding all lines among objects
+                        if isinstance(line, Line):
+                            lines.append(line)
+
+                    for line in lines:  # finding whether the list of lines contains both the lines given
+                        if (line.p1 and line.p2) in [points[0], points[1]]:
+                            line_1 = line
+                        if (line.p1 and line.p2) in [points[1], points[2]]:
+                            line_2 = line
+
+                    index = 0
+                    for line in [line_1, line_2]:
+                        if line is None:  # create lines in case they don't exist
+                            objects_local.append(Line(points[index], points[(index+1) % 3], length="5"))
+                        index += 1
 
         printable_objects = []
         for obj in objects:  # making nice list of conversions

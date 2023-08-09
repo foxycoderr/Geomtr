@@ -30,3 +30,19 @@ class Logger:  # operates with the log file
         logfile.write(log_text)
         logfile.close()
 
+    @staticmethod
+    def clear_log():  # clears logs
+        logfile = open("log", "w")
+        logfile.write("")
+        logfile.close()
+
+    @staticmethod
+    def log_length():  # returns number of lines in log
+        logfile = open("log", "r")
+        log = list(logfile.read())
+        count = 0
+        for symbol in log:
+            if symbol == "\n":
+                count += 1
+                logfile.close()
+        return count+1

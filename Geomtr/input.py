@@ -5,8 +5,9 @@ class Input:
 
     @staticmethod
     def input_problem(dbm):  # input of problem (nice and simple)
-        problem = input("Please paste or type your problem here... ")
-        print("Working on it...")
+        problem = input("Please paste or type your problem here, or enter 'exit' to go back... ")
+        if not problem == "exit":
+            print("Working on it...")
         Logger.log("Problem text put in", "input")
         return problem
 
