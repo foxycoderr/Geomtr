@@ -1,3 +1,4 @@
+""" Drawer """
 from logger import Logger
 import pygame
 import ctypes
@@ -16,6 +17,7 @@ class Drawer:
         pygame.display.flip()  # update display
 
     def draw(self):  # just displays a white screen for now
+        """ Draws the diagram in a new window. """
         running = True
 
         while running:  # checking if program was closed each frame

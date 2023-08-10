@@ -1,9 +1,13 @@
+""" Tokenizer """
 from logger import Logger
 
 
-class Tokenizer:  # very simple class to split text and sentences, probably not very necessary
+class Tokenizer:
+    """ Very simple class to split text and sentences, probably not very necessary. """
+
     @staticmethod
     def split_text(text):
+        """ Splits problem text into sentences. """
         text = text.lower()
         sentence_list = text.split(".")
         Logger.log("Split text", "tokenizer")
@@ -11,6 +15,7 @@ class Tokenizer:  # very simple class to split text and sentences, probably not 
 
     @staticmethod
     def split_sentence(sentence):
+        """ Splits sentences into words. """
         sentence = sentence.strip()
         words_list = sentence.split(" ")
         Logger.log("Split sentence", "tokenizer")

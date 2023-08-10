@@ -1,16 +1,19 @@
+""" Main """
+import os
+import time
+import json
+import sys
 from input import Input
 from logger import Logger
 from parser import Parser
 from tokenizer import Tokenizer
-from converter import Converter, Point
+from converter import Converter
 from coordinator import Coordinator
 from datetime import datetime
-import os
-import time
-import json
 
 
-class Runner:  # main runner class, brings all functions of the program together
+class Runner:
+    """ Main class, brings everything together. """
     def __init__(self):
         self.version = "0.0"  # program attributes
         self.release_date = "N/A"
@@ -34,28 +37,33 @@ class Runner:  # main runner class, brings all functions of the program together
         else:
             self.update_class_data()  # check docs for this func below
 
-    def update_class_data(self):  # called when use data is updated
+    def update_class_data(self):
+        """ Update class attributes from user data file. """
         with open("user_data.json", "r") as f:
             user_data = json.load(f)
-        self.username = user_data["username"]  # update class attributes according to the settings file
+        self.username = user_data["username"]  # update class attributes according to
+        # the settings file
         self.debug_mode = user_data["debug_mode"]
         self.history = user_data["history"]
         f.close()
 
-    def main(self):  # main function of the program (diagram drawing)
+    def main(self):
+        """ Draws the diagram. :)"""
         if Logger.log_length() > 50:
             Logger.clear_log()
 
         Logger.log("Starting main function.", "main")
         dbm = self.debug_mode
-        problem = Input.input_problem(dbm)  # input of problem
+        problem = Input.input_problem()  # input of problem
 
         if problem == "exit":
             print("Exiting problem input.")
             self.command_input()
 
-        if dbm:  # this variable is passed to almost every function, if it's true, some logs get printed into the console as well as the logfile
-            print("Debug mode is turned on; debugging logs will be printed. Run 'debug' to toggle it.")
+        if dbm:  # this variable is passed to almost every function,
+            # if it's true, some logs get printed into the console as well as the logfile
+            print("Debug mode is turned on; debugging logs will be printed."
+                  " Run 'debug' to toggle it.")
         valid = Input.validate(problem, dbm)  # initial validation of input
 
         parser = Parser()  # initialise parser
@@ -64,20 +72,24 @@ class Runner:  # main runner class, brings all functions of the program together
             for sentence in sentence_list:
                 sentence = Tokenizer.split_sentence(sentence)  # split sentence into words
 
-                object_kws = parser.find_objects(sentence, dbm)  # finding object keywords
+                object_kws = parser.find_objects(sentence)  # finding object keywords
                 property_kws = parser.find_properties(sentence, dbm)  # finding property keywords
 
-                valid = Converter.validate(object_kws, property_kws, dbm)  # additional logic validation
+                valid = Converter.validate(object_kws, property_kws, dbm)  # additional logic
+                # validation
 
                 if valid:
-                    [objects, properties] = Converter.convert_objects(object_kws, dbm)  # converting keywords to classes
-                    [properties, objects] = Converter.convert_properties(property_kws, objects, properties, dbm)
+                    [objects, properties] = Converter.convert_objects(object_kws)  # converting
+                    # keywords to classes
+                    [properties, objects] = Converter.convert_properties(property_kws, objects,
+                                                                         properties)
 
-                    # Creation of coordinates by default off for now due to incompleteness of the module
+                    # Creation of coordinates by default off for now due to incompleteness
                     # Errors may arise if uncommented
-                    coordinates = Coordinator.create_coordinates(objects, properties)
+                    # coordinates = Coordinator.create_coordinates(objects, properties)
 
-                    """ ❗❗❗ Make sure this next part stays the last thing after drawing diagram. ❗❗❗ """
+                    """ ❗❗❗ Make sure this next part stays the last thing after
+                     drawing diagram. ❗❗❗ """
 
                     with open("user_data.json", "r") as f:
                         data = json.load(f)
@@ -92,15 +104,19 @@ class Runner:  # main runner class, brings all functions of the program together
 
                     self.update_class_data()  # update class attributes
                 else:
-                    print("Logic validation failed. Please edit the problem text and fix errors outlined above, then try again. ")
+                    print("Logic validation failed. Please edit the problem text and"
+                          " fix errors outlined above,"
+                          " then try again. ")
 
         else:
-            print("Parsing failed. Please edit the problem text and fix errors outlined above, then try again. ")
+            print("Parsing failed. Please edit the problem text and fix errors"
+                  " outlined above, then try again. ")
 
         Logger.blank_line()
         self.command_input()  # ready for next command
 
-    def debug_toggle(self):  # toggles debug mode
+    def debug_toggle(self):
+        """ Toggles debug mode. """
         with open("user_data.json", "r") as f:
             data = json.load(f)
         data["debug_mode"] = not data["debug_mode"]
@@ -115,7 +131,8 @@ class Runner:  # main runner class, brings all functions of the program together
             json.dump(data, f)
         self.update_class_data()  # update class attributes
 
-    def history_display(self, arg):  # prints history
+    def history_display(self, arg):
+        """ Prints history. """
         arg = arg[8:]
         if not arg.isnumeric():  # if no ID arg is given, just display list
             print("ID " + " | " + "Problem Text" + 38*" " + " | " + "Date")  # top row
@@ -137,7 +154,8 @@ class Runner:  # main runner class, brings all functions of the program together
 
                 print(index + " | " + problem_text + " | " + date)  # prints row
             print()
-            print("To see a description fully, run 'history <problem_id>', for example 'history 3'. ")
+            print("To see a description fully, run 'history <problem_id>', for "
+                  "example 'history 3'. ")
         else:  # if problem ID is given
             arg = int(arg)
             try:
@@ -147,16 +165,19 @@ class Runner:  # main runner class, brings all functions of the program together
                 print("Invalid problem ID. Please run 'history' to see all saved problems. ")
 
     def program_info(self):
+        """ Print info about the program. """
         print(f"Version: {self.version}")
         print(f"Release Date: {self.release_date}")
         print("Author: FoxyCoder")
         self.command_input()
 
     def program_start(self):
+        """ Welcome message. """
         print("Welcome to Geomtr. Use 'help' to get information on how to use the program.")
         self.command_input()
 
     def help(self):
+        """ Prints list of commands. """
         print("Geomtr is very simple to use. These are the commands it recognizes: ")
         print("help - display this message")
         print("start - run the main draw-diagram script")
@@ -164,16 +185,20 @@ class Runner:  # main runner class, brings all functions of the program together
         print("info - display version, release date etc. ")
         print("debug - toggle debug mode")
         print("exit - close the program. ")
-        print("Commands do not take arguments (additional information to run them); just type in the command, hit enter, and the system wil guide you. ")
+        print("Commands do not take arguments (additional information to run them); just type in "
+              "the command,"
+              " hit enter, and the system wil guide you. ")
         self.command_input()
 
     @staticmethod
     def exit():
+        """ Closes the program. """
         print("Thank you for using Geomtr. This window will close automatically in 3 seconds. ")
         time.sleep(3)
-        exit(0)
+        sys.exit(0)
 
-    def command_input(self):  # command is called after the use of any other command, creates the terminal-like UI
+    def command_input(self):
+        """ Command is called after the use of any other command, creates the terminal-like UI. """
         command = input(">>> ").lower().strip()
 
         match command:
@@ -202,5 +227,3 @@ Logger.blank_line()
 Logger.plain_log(f"Starting program at {datetime.now()}.")
 Logger.blank_line()
 runner.program_start()
-
-

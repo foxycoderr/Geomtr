@@ -1,10 +1,13 @@
+""" Input """
 from logger import Logger
 
 
 class Input:
+    """ Controls problem input. """
 
     @staticmethod
-    def input_problem(dbm):  # input of problem (nice and simple)
+    def input_problem():  # input of problem (nice and simple)
+        """ Inputs the problem. """
         problem = input("Please paste or type your problem here, or enter 'exit' to go back... ")
         if not problem == "exit":
             print("Working on it...")
@@ -13,7 +16,9 @@ class Input:
 
     @staticmethod
     def validate(text, dbm):  # initial validation of problem text for invalid symbols
-        if dbm: print("Validating problem text.")
+        """ Checks text contains no bad symbols. """
+        if dbm:
+            print("Validating problem text.")
         Logger.log("Started text validation", "input")
         text = list(text)
 
@@ -24,10 +29,12 @@ class Input:
             if symbol_ascii_code < 32 or symbol_ascii_code > 126:
                 valid = False
                 errors.append(f"Symbol '{symbol}' does not appear to be an English letter, number, or punctuation sign.")
+
                 Logger.log("Found issue in validation", "input")
 
         if valid is True:
-            if dbm: print("Problem validated, no issues found. Proceeding to parse.")
+            if dbm:
+                print("Problem validated, no issues found. Proceeding to parse.")
             Logger.log("Validation OK", "input")
         else:
             print("Problem text appears to be invalid. Following issues were found: ")
