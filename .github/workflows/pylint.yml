@@ -20,4 +20,4 @@ jobs:
         pip install pylint
     - name: Analysing the code with pylint
       run: |
-        python lint.py --path ./src --threshold 2
+        python lint.py --path ./Geomtr --threshold 2
