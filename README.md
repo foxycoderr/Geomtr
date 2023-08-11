@@ -1,4 +1,8 @@
 # Geomtr
+[![Pylint](https://github.com/foxycoderr/Geomtr/actions/workflows/pylint.yml/badge.svg)](https://github.com/foxycoderr/Geomtr/actions/workflows/pylint.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![Static Badge](https://img.shields.io/badge/version-0.0-indianred)
+
 **Important:** At the moment, the project is in very early development; check back later for an installation and usage guide, as well as a working version.
 
 
