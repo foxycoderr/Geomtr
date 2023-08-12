@@ -26,7 +26,7 @@ class Coordinator:
                         inp = angle.p_2  # inp = initial point
                         cp1 = angle.p_1  # cp = connection point, cp1 will be the one under inp
                         cp2 = angle.p_3
-                        Logger.log([inp, cp1, cp2], "coord")
+                        Logger.log([str(inp), str(cp1), str(cp2)], "coord")
                         # cp1_angle = 180  # gathering angles
                         # cp2_angle = 180-angle.value
 
@@ -34,9 +34,10 @@ class Coordinator:
                         for line in objects:
                             if isinstance(line, Line):  # gathering distances for points
                                 if inp in [line.p_1, line.p_2] and any([cp1 in [line.p_1, line.p_2],
-                                                                      cp2 in [line.p_1, line.p_2]]):
+                                                                        cp2 in [line.p_1,
+                                                                                line.p_2]]):
                                     angle_lines.append(line)
-                        Logger.log(angle_lines, "coord")
+                        Logger.log((line for line in angle_lines), "coord")
                         cp1_line = None
                         cp2_line = None
                         for line in angle_lines:  # determining which line found is which
@@ -45,20 +46,26 @@ class Coordinator:
                             else:
                                 cp2_line = line
 
-                        # TODO: make sure signs of offsets are correct
-                        angle_sin = math.sin(math.radians(int(angle.value)))  # getting x offset
-                        x_offset = angle_sin*int(cp2_line.length)  # to line length ratio
-                        angle_cos = math.cos(math.radians(int(angle.value)))  # getting y offset
-                        y_offset = angle_cos*int(cp2_line.length)  # to line length ratio
-                        coordinates.append(Point(0, 0, obj.name))
-                        coordinates.append(Point(0, -int(cp1_line.length), cp1))
-                        coordinates.append(Point(-x_offset, -y_offset, cp2))
+                        point_object_cp1 = Point(0, -int(cp1_line.length), cp1)
+                        point_object_inp = Point(0, 0, obj.name)
+
+                        # look at coordinate calculation.png for variable names
+
+                        angle_m = 90 - int(angle.value)
+                        sin_m = math.sin(math.radians(angle_m))
+                        cos_m = math.cos(math.radians(angle_m))
+                        y_offset = -float(sin_m)*float(cp2_line.length)
+                        x_offset = float(cos_m)*float(cp2_line.length)
+
+                        coordinates.append(point_object_inp)
+                        coordinates.append(point_object_cp1)
+                        coordinates.append(Point(x_offset, y_offset, cp2))
 
             if obj is Line:
                 pass
 
-        printable_ccordinates = []
+        printable_coordinates = []
         for point in coordinates:
-            printable_ccordinates.append(point)
-        Logger.log(f"Coordinator finished, {printable_ccordinates}", "coordinator")
+            printable_coordinates.append(str(point))
+        Logger.log(f"Coordinator finished, {printable_coordinates}", "coordinator")
         return coordinates

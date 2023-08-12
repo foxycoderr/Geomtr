@@ -13,7 +13,8 @@ class Point:
 
     def __str__(self):  # configures what should be returned when str()
         # is applied to the class instance
-        return str("point " + str(self.name))
+        return str("point " + str(self.name) + " at " + str(self.x_coord) + "," + str(self.y_coord))
+
 
 
 class Line:
