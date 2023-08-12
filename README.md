@@ -17,7 +17,7 @@ Documentation can be found in the docs folder. It contains:
 - reference.md - describes how the program works and the function of each module - perfect if you want to familiarise yourself with the function before reading the code
 - tutorials.md - program's user manual
 
-If you find the documentation incomplete, please create create an issue [here](https://github.com/foxycoderr/Geomtr/issues/new/choose) (link to create issue button on this project's GitHub page). 
+If you find the documentation incomplete, please create an issue [here](https://github.com/foxycoderr/Geomtr/issues/new/choose) (link to create issue button on this project's GitHub page). 
 
 ### Contribution
 This is currently a personal project, so direct contribution isn't possible; you can, however, create an issue on this project's page if you find a bug or have a suggestion.
